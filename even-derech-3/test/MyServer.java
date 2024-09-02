@@ -7,7 +7,7 @@ import java.net.SocketTimeoutException;
 
 public class MyServer {
     private final int port;
-    private ClientHandler ch;
+    private final ClientHandler ch;
     private boolean stop;
     public MyServer(int port, ClientHandler ch) {
         this.port = port;
@@ -29,10 +29,19 @@ public class MyServer {
                 e.printStackTrace();
             }
             finally{
-                aClient.close();
+                if (aClient != null && !aClient.isClosed()) {
+                    try {
+                        aClient.close();  // Close the socket, which automatically closes streams
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
             }                   
         }
         server.close();
+        
+    
     }
      public void start(){
         new Thread(() -> {

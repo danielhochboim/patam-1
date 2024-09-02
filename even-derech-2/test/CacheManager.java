@@ -3,9 +3,9 @@ package test;
 import java.util.HashSet;
 
 public class CacheManager {
-    private int size;
-    private HashSet<String> words;
-    CacheReplacementPolicy crp;
+    private final int size;
+    private final HashSet<String> words;
+    private final CacheReplacementPolicy crp;
 	
     public CacheManager(int size, CacheReplacementPolicy crp){
         this.size = size;

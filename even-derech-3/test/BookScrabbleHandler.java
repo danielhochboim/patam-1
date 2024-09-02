@@ -30,18 +30,27 @@ public class BookScrabbleHandler implements ClientHandler {
             //check if its a query or challenge
             if(queryOrChallenge == "Q"){
                 output.println(String.valueOf(dictionaryManager.query(books)));
-                output.flush();
             }
             else{
                 output.println(String.valueOf(dictionaryManager.challenge(books)));
-                output.flush();
             }
-            input.close();
-            output.close();
-            inFromClient.close();
-            outToClient.close();
+            output.flush();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        finally{
+            try {
+                if (input != null) {
+                    input.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (output != null) {
+                output.close();
+            }
+            this.close();
+    
         }
     }
 

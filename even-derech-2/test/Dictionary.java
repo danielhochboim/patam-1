@@ -6,12 +6,12 @@ import java.io.FileReader;
 import java.util.Scanner;
 
 public class Dictionary {
-    private String[] fileNames;
-    private CacheManager cacheExistingWords;
-    private CacheManager cacheNonExistingWords;
-    private BloomFilter bloomFilter;
+    private final String[] fileNames;
+    private final CacheManager cacheExistingWords;
+    private final CacheManager cacheNonExistingWords;
+    private final BloomFilter bloomFilter;
 
-    public Dictionary(String...fileNames){
+    public Dictionary(String... fileNames){
         this.fileNames = fileNames;
         this.cacheExistingWords = new CacheManager(400, new LRU());
         this.cacheNonExistingWords = new CacheManager(100, new LFU());
@@ -45,7 +45,6 @@ public class Dictionary {
             return false;
         }
         else if(bloomFilter.contains(word)){
-            cacheExistingWords.add(word);
             return true;
         }
         else{
@@ -58,6 +57,7 @@ public class Dictionary {
         try{
             isExist = IOSearcher.search(word, fileNames);
         }catch(Exception e){
+            e.printStackTrace();
             return false;
         }
 

@@ -6,11 +6,11 @@ import java.security.NoSuchAlgorithmException;
 import java.util.BitSet;
 
 public class BloomFilter {
-    private int size;
-    private BitSet bits;
-    private String[] algs;
+    private final int size;
+    private final BitSet bits;
+    private final String[] algs;
 
-    public BloomFilter(int size, String...algs) {
+    public BloomFilter(int size, String... algs) {
         this.size = size;
         this.algs = algs;
         this.bits = new BitSet(size);
@@ -46,7 +46,7 @@ public class BloomFilter {
             }
             byte[] bts = md.digest(word.getBytes());
             bigInt = new BigInteger(bts);
-            if(bits.get(Math.abs(bigInt.intValue()) % size) == false){
+            if(!bits.get(Math.abs(bigInt.intValue()) % size)){
                 return false;
             }
         }
