@@ -1,7 +1,6 @@
 package test;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class Word {
     private Tile[] tiles;
@@ -55,8 +54,6 @@ public class Word {
             if (other.tiles != null)
                 return false;
         } 
-        // else if (!tiles.equals(other.tiles))
-        //     return false;
         else if(!Arrays.equals(tiles, other.tiles))
             return false;
         if (row != other.row)

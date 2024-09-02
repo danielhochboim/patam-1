@@ -51,6 +51,8 @@ public class Tile {
     public static class Bag { 
         private static Bag bag = null;
         private final int[] quantities = {9,2,2,4,12,2,3,2,9,1,1,4,2,6,8,2,1,6,4,6,4,2,2,1,2,1};
+        private final int[] legalQuantities = {9,2,2,4,12,2,3,2,9,1,1,4,2,6,8,2,1,6,4,6,4,2,2,1,2,1};
+
         private int sumOfTiles;
         private final Tile[] tiles;
 
@@ -114,10 +116,8 @@ public class Tile {
         }
 
         public void put(Tile tile){
-            int[] legalQuantities = {9,2,2,4,12,2,3,2,9,1,1,4,2,6,8,2,1,6,4,6,4,2,2,1,2,1};
             int index = tile.letter - 'A';
             if(quantities[index] == legalQuantities[index]){
-                // throw new IllegalArgumentException("The bag is full for this letter - " + tile.letter);
                 return;
             }
             quantities[index]++;

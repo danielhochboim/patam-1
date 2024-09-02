@@ -23,7 +23,7 @@ public class MainTrain {
 			int[] qs1 = b.getQuantities();		
 			if(qs1[i]!=qs[i]-1)
 				System.out.println("problem with getRand (-1)");
-
+			
 			b.put(t);
 			b.put(t);
 			b.put(t);
@@ -68,7 +68,7 @@ public class MainTrain {
 		Word w4=new Word(ts,7,-1,false);
 		Word w5=new Word(ts,0,7,true);
 		Word w6=new Word(ts,7,0,false);
-
+		
 		if(b.boardLegal(w0) || b.boardLegal(w1) || b.boardLegal(w2) || b.boardLegal(w3) || b.boardLegal(w4) || !b.boardLegal(w5) || !b.boardLegal(w6))
 			System.out.println("your boardLegal function is wrong (-10)");
 		
@@ -78,7 +78,6 @@ public class MainTrain {
 		Word horn=new Word(get("HORN"), 7, 5, false);
 		if(b.tryPlaceWord(horn)!=14)
 			System.out.println("problem in placeWord for 1st word (-10)");
-
 
 		Word farm=new Word(get("FA_M"), 5, 7, true);
 		if(b.tryPlaceWord(farm)!=9)

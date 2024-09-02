@@ -1,11 +1,36 @@
 package test;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class Board {
     private static Board board = null;
     private Tile[][] tiles = new Tile[15][15];
     private ArrayList<Word> words = new ArrayList<Word>();
+    int[][] doubleLetterPos = new int[][]{
+        {0,3},{0,11},{2,6},{2,8},{3,0},
+        {3,7},{3,14},{6,2},{6,6},{6,8},
+        {6,12},{7,3},{7,11},{8,2},{8,6},
+        {8,8},{11,12},{11,0},{11,7},{11,14},
+        {12,6},{12,8},{14,3},{14,11}};
+    int[][] doubleWordPos = new int[][]{
+        {1, 1}, {2, 2}, {3, 3}, {4, 4}, {7, 7},
+        {10, 10}, {11, 11}, {12, 12}, {13, 13}, {14, 14},
+        {1, 13}, {2, 12}, {3, 11}, {4, 10},
+        {10, 4}, {11, 3}, {12, 2}, {13, 1}
+    };
+    int[][] tripleLetterPos = new int[][]{
+        {1, 5}, {1, 9},
+        {5, 1}, {5, 5}, {5, 9}, {5, 13},
+        {9, 1}, {9, 5}, {9, 9}, {9, 13},
+        {13, 5}, {13, 9}
+    };
+    int[][] tripleWordPos = new int[][]{
+        {0, 0}, {0, 7}, {0, 14},
+        {7, 0}, {7, 14},
+        {14, 0}, {14, 7}, {14, 14}
+    };  
 
     private Board(){
 
@@ -111,7 +136,7 @@ public class Board {
 
         }
 
-        return true;
+        return isNear;
     }
     public boolean dictionaryLegal(Word word){
         return true;
@@ -168,26 +193,7 @@ public class Board {
         }
     }
 
-    private ArrayList<Word> removeDuplicates(ArrayList<Word> words) 
-    { 
-  
-        // Create a new ArrayList 
-        ArrayList<Word> newList = new ArrayList<Word>(); 
-  
-        // Traverse through the first list 
-        for (Word word : words) { 
-  
-            // If this element is not present in newList 
-            // then add it 
-            if (!newList.contains(word)) { 
-  
-                newList.add(word); 
-            } 
-        } 
-  
-        // return the new list 
-        return newList; 
-    } 
+    
     public ArrayList<Word> getWords(Word word){
         int row = word.getRow();
         int col = word.getCol();
@@ -195,7 +201,7 @@ public class Board {
         Tile[] wordTiles = word.getTiles();
         ArrayList<Boolean> placedTest = new ArrayList<Boolean>();
         //creating a list of near words
-        ArrayList<Word> nearWords = new ArrayList<Word>();
+        Set<Word> nearWords = new HashSet<Word>();
         //adding the word itself
         nearWords.add(word);
 
@@ -293,12 +299,6 @@ public class Board {
                     if(tiles[row + 1][col + i] != null){nearWords.add(findNearWord(row + 1, col + i, true));}
                 }
             }
-            // for(int i = 0; i < len; i++){
-            //     if(tiles[row][col + i] != null){
-            //         isNear = true;
-            //         if(tiles[row][col + i] != word.getTiles()[i]){return false;}
-            //     }
-            // }
             //removing the placed word
             for(int i = 0; i < wordTiles.length; i++){
                 if(placedTest.get(i) == true){
@@ -307,15 +307,13 @@ public class Board {
             }
         }
         //remove duplicates if it found the same word at the right and the left of the word
-        nearWords = removeDuplicates(nearWords);
         //remove words that already exist in the board, and are not new
         nearWords.removeAll(words);
-        return nearWords;
+        return new ArrayList<Word>(nearWords);
     }
 
     //checks if a letter is in the double letter score cell
     private boolean isDoubleLetter(int row, int col){
-        int[][] doubleLetterPos = new int[][]{{0,3},{0,11},{2,6},{2,8},{3,0},{3,7},{3,14},{6,2},{6,6},{6,8},{6,12},{7,3},{7,11},{8,2},{8,6},{8,8},{11,12},{11,0},{11,7},{11,14},{12,6},{12,8},{14,3},{14,11}};
         for(int[] pos : doubleLetterPos){
             if(pos[0] == row && pos[1] == col){
                 return true;
@@ -325,12 +323,6 @@ public class Board {
     }
     //checks if a letter is in the triple letter score cell
     private boolean isTripleLetter(int row, int col){
-        int[][] tripleLetterPos = new int[][]{
-            {1, 5}, {1, 9},
-            {5, 1}, {5, 5}, {5, 9}, {5, 13},
-            {9, 1}, {9, 5}, {9, 9}, {9, 13},
-            {13, 5}, {13, 9}
-        };
         for(int[] pos : tripleLetterPos){
             if(pos[0] == row && pos[1] == col){
                 return true;
@@ -341,12 +333,6 @@ public class Board {
 
     //checks if a letter is in the double word score cell
     private boolean isDoubleWord(int row, int col){
-        int[][] doubleWordPos = new int[][]{
-            {1, 1}, {2, 2}, {3, 3}, {4, 4}, {7, 7},
-            {10, 10}, {11, 11}, {12, 12}, {13, 13}, {14, 14},
-            {1, 13}, {2, 12}, {3, 11}, {4, 10},
-            {10, 4}, {11, 3}, {12, 2}, {13, 1}
-        };
         for(int[] pos : doubleWordPos){
             if(pos[0] == row && pos[1] == col){
                 return true;
@@ -356,12 +342,8 @@ public class Board {
     }
     
     //checks if a letter is in the triple word score cell
-    private boolean isTripleWord(int row, int col){
-        int[][] tripleWordPos = new int[][]{
-            {0, 0}, {0, 7}, {0, 14},
-            {7, 0}, {7, 14},
-            {14, 0}, {14, 7}, {14, 14}
-        };        for(int[] pos : tripleWordPos){
+    private boolean isTripleWord(int row, int col){      
+        for(int[] pos : tripleWordPos){
             if(pos[0] == row && pos[1] == col){
                 return true;
             }
@@ -486,18 +468,15 @@ public class Board {
         if(!boardLegal(copyWord)){
             return 0;
         }
-        // System.out.println(copyWord);
         nearWords = getWords(copyWord);
-        // System.out.println(nearWords);
         for(Word nearWord : nearWords){
             if(!dictionaryLegal(nearWord)){
                 return 0;
             }
-        }
-        //calculate score
-        for(Word nearWord : nearWords){
+            //calculate score
             score += getScore(nearWord);
         }
+
         //place on the board
         placeWord(word);
         words.addAll(nearWords);
